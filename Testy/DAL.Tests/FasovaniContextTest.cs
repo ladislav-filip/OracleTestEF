@@ -106,6 +106,9 @@ namespace DAL.Tests
             }
         }
 
+        /// <summary>
+        /// Kontrola na datové typy jake předává .NET Oracle driver
+        /// </summary>
         [Fact]
         public void DataType_Double_Check()
         {
