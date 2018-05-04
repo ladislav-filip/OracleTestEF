@@ -123,6 +123,7 @@ namespace DAL.Tests
                     {
                         var value = r.GetValue(0);
                         var typ = value.GetType();
+                        // kontroluji na double
                         Assert.True(typeof(double) == typ);
                         break;
                     }
