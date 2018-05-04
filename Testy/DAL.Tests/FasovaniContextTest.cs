@@ -71,6 +71,9 @@ namespace DAL.Tests
             }
         }
 
+        /// <summary>
+        /// Test na vícenásobnou zmenu entity ale pouze jeden update
+        /// </summary>
         [Fact]
         public void Update_SkladDbSet_MnozstviBySingle()
         {
