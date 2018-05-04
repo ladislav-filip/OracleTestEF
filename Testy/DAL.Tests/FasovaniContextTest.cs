@@ -1,8 +1,6 @@
 ﻿using System.Data.Entity;
-using System.Diagnostics;
 using System.Linq;
 using Xunit;
-using DAL.Tests.Extensions;
 
 namespace DAL.Tests
 {
@@ -76,8 +74,7 @@ namespace DAL.Tests
 
                 var sql = logger.Current.ToString();
 
-                Assert.Contains("M_MNOZSTVI", sql);
-                
+                Assert.ContainsCount(1, "M_MNOZSTVI", sql);
                 
             }
         }
