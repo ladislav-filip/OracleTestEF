@@ -5,6 +5,12 @@ VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OracleTestsEF", "OracleTestsEF\OracleTestsEF.csproj", "{33273DAA-DCDD-4ABA-814A-0C7053315994}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{0A5C0979-8F66-4698-90AD-A4E9C6B68F1D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testy", "Testy", "{B3E12BD2-8C68-46AE-8068-02E00AA09FCE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL.Tests", "Testy\DAL.Tests\DAL.Tests.csproj", "{3E6BB985-7714-48F4-BCEC-C5ACB0DBD1D2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,9 +21,20 @@ Global
 		{33273DAA-DCDD-4ABA-814A-0C7053315994}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{33273DAA-DCDD-4ABA-814A-0C7053315994}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{33273DAA-DCDD-4ABA-814A-0C7053315994}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A5C0979-8F66-4698-90AD-A4E9C6B68F1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A5C0979-8F66-4698-90AD-A4E9C6B68F1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A5C0979-8F66-4698-90AD-A4E9C6B68F1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A5C0979-8F66-4698-90AD-A4E9C6B68F1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E6BB985-7714-48F4-BCEC-C5ACB0DBD1D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E6BB985-7714-48F4-BCEC-C5ACB0DBD1D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E6BB985-7714-48F4-BCEC-C5ACB0DBD1D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E6BB985-7714-48F4-BCEC-C5ACB0DBD1D2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3E6BB985-7714-48F4-BCEC-C5ACB0DBD1D2} = {B3E12BD2-8C68-46AE-8068-02E00AA09FCE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4CF05D94-8175-4D6C-A3E0-0B0CB453F754}
