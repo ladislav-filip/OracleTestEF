@@ -1,5 +1,6 @@
 ﻿using System.Data.Entity;
 using System.Linq;
+using Oracle.ManagedDataAccess.Client;
 using Xunit;
 
 namespace DAL.Tests
@@ -79,7 +80,7 @@ namespace DAL.Tests
             {
                 using (var trn = context.Database.BeginTransaction())
                 {
-                    var data = context.SkladTable.Where(p => p.M_MNOZSTVI > 10).Take(5).ToArray();
+                    var data = context.SkladTable.Where(p => p.M_MNOZSTVI > 10 && p.M_CENAJ > 0).Take(5).ToArray();
                     var tmp = data.First();
 
                     logger.StartNewRecord();
@@ -103,6 +104,29 @@ namespace DAL.Tests
                 }
 
             }
+        }
+
+        [Fact]
+        public void DataType_Double_Check()
+        {
+            using (var context = new FasovaniContext())
+            {
+                var conn = context.Database.Connection as OracleConnection;
+                var cmd = new OracleCommand("SELECT M_CELKPOC, m_mnozstvi, m_cenaj FROM m_sklad WHERE m_cenaj > 0 AND m_mnozstvi > 10 and ROWNUM < 5", conn);
+                conn.Open();
+                using (var r = cmd.ExecuteReader())
+                {
+                    while (r.Read())
+                    {
+                        var value = r.GetValue(0);
+                        var typ = value.GetType();
+                        Assert.True(typeof(double) == typ);
+                        break;
+                    }
+                    r.Close();
+                }
+            }
+
         }
     }
 }

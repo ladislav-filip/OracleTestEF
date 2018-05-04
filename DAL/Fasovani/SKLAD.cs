@@ -15,8 +15,8 @@ namespace DAL.Fasovani
         [Key, Column(Order = 3)]
         public string M_CISLOM { get; set; }
 
-        public decimal? M_MNOZSTVI { get; set; }
+        public double? M_MNOZSTVI { get; set; }
 
-        public decimal? M_CENAJ { get; set; }
+        public double? M_CENAJ { get; set; }
     }
 }
