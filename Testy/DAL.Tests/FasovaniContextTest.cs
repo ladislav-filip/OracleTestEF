@@ -1,4 +1,6 @@
-﻿using System.Data.Entity;
+﻿using System.Data;
+using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using Oracle.ManagedDataAccess.Client;
 using Xunit;
@@ -59,6 +61,8 @@ namespace DAL.Tests
                 var data = context.SkladTable.Where(p => p.M_MNOZSTVI > 10).Take(5).ToArray();
                 var tmp = data.First();
 
+                // SetCenaAndCommit(tmp.M_SKLAD, tmp.M_CISLOZAK, tmp.M_CISLOM, -10);
+
                 var one = context.SkladTable.Find(tmp.M_SKLAD, tmp.M_CISLOZAK, tmp.M_CISLOM);
                 one.M_MNOZSTVI += 1;
 
@@ -87,9 +91,11 @@ namespace DAL.Tests
                     var tmp = data.First();
 
                     logger.StartNewRecord();
-                    var one = context.SkladTable.Single(p =>
-                        p.M_SKLAD == tmp.M_SKLAD && p.M_CISLOZAK == tmp.M_CISLOZAK && p.M_CISLOM == tmp.M_CISLOM);
+                    var one = context.SkladTable.Single(p => p.M_SKLAD == tmp.M_SKLAD && p.M_CISLOZAK == tmp.M_CISLOZAK && p.M_CISLOM == tmp.M_CISLOM);
                     one.M_MNOZSTVI += 1;
+
+                    // v jiném kontextu nastavím na této entitě cenu, ale v tomto kontextu se to nijak neprojeví!!
+                    SetCenaAndCommit(tmp.M_SKLAD, tmp.M_CISLOZAK, tmp.M_CISLOM, -14);
 
                     logger.StartNewRecord();
                     var two = context.SkladTable.Single(p =>
@@ -106,6 +112,47 @@ namespace DAL.Tests
                     trn.Rollback();
                 }
 
+            }
+        }
+
+        [Fact]
+        public void UpdateExact_SkladDbSet_MnozstviBySingle()
+        {
+            string cisloM = "01041";
+            string cisloZak = "1";
+            string sklad = "10";
+
+            var logger = new LoggerDb();
+
+            using (var context = new FasovaniContext(logger))
+            {
+                // zde aktualizuji tento záznam v SQL Developeru nebo v jiném contextu
+                // update m_sklad set M_CENAJ = -5 where m_sklad = '10' and M_CISLOZAK = '1' and M_CISLOM = '01041'
+                SetCenaAndCommit(sklad, cisloZak, cisloM, -5);
+                logger.StartNewRecord();
+                var one = context.SkladTable.Single(p => p.M_SKLAD == sklad && p.M_CISLOZAK == cisloZak && p.M_CISLOM == cisloM);
+                Debug.WriteLine(one.M_CENAJ);
+
+                // zde aktualizuji tento záznam v SQL Developeru nebo v jiném contextu
+                // update m_sklad set M_CENAJ = -6 where m_sklad = '10' and M_CISLOZAK = '1' and M_CISLOM = '01041'
+                SetCenaAndCommit(sklad, cisloZak, cisloM, -6);
+                logger.StartNewRecord();
+                var two = context.SkladTable.Single(p => p.M_SKLAD == sklad && p.M_CISLOZAK == cisloZak && p.M_CISLOM == cisloM);
+                Debug.WriteLine(two.M_CENAJ);
+
+                //two.M_CENAJ = 100;
+                two.M_MNOZSTVI += 10;
+
+                var data = context.SkladTable.FirstOrDefault(p => p.M_CENAJ == -6);
+                Debug.WriteLine(data.M_CENAJ);
+
+
+                logger.StartNewRecord();
+                context.SaveChanges();
+
+                var sql = logger.Current.ToString();
+
+                Assert.ContainsCount(1, "M_MNOZSTVI", sql);
             }
         }
 
@@ -134,6 +181,16 @@ namespace DAL.Tests
                 }
             }
 
+        }
+
+        private void SetCenaAndCommit(string sklad, string cisloZak, string cisloM, double cena)
+        {
+            using (var context = new FasovaniContext())
+            {
+                var ent = context.SkladTable.Find(sklad, cisloZak, cisloM);
+                ent.M_CENAJ = cena;
+                context.SaveChanges();
+            }
         }
     }
 }
