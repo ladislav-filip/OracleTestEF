@@ -121,7 +121,9 @@
     <Compile Include="Asserts\TypeAsserts.cs" />
     <Compile Include="Extensions\AssertExtension.cs" />
     <Compile Include="FasovaniContextTest.cs" />
+    <Compile Include="FisnetContext.cs" />
     <Compile Include="LoggerDb.cs" />
+    <Compile Include="PisekContextTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

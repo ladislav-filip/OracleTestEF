@@ -56,6 +56,8 @@
     <Compile Include="FasovaniContext.cs" />
     <Compile Include="Fasovani\SKLAD.cs" />
     <Compile Include="ILoggerDb.cs" />
+    <Compile Include="PisekContext.cs" />
+    <Compile Include="Pisek\Moje.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
