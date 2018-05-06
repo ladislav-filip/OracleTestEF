@@ -115,6 +115,9 @@ namespace DAL.Tests
             }
         }
 
+        /// <summary>
+        /// Ukázka cache v EF, přestože je proveden SQL dotaz, tak záznamy již jednou načtených entit nejsou aktualizovány podle posledního stavu
+        /// </summary>
         [Fact]
         public void UpdateExact_SkladDbSet_MnozstviBySingle()
         {
@@ -126,9 +129,10 @@ namespace DAL.Tests
 
             using (var context = new FasovaniContext(logger))
             {
+                var cenaTest = -5;
                 // zde aktualizuji tento záznam v SQL Developeru nebo v jiném contextu
                 // update m_sklad set M_CENAJ = -5 where m_sklad = '10' and M_CISLOZAK = '1' and M_CISLOM = '01041'
-                SetCenaAndCommit(sklad, cisloZak, cisloM, -5);
+                SetCenaAndCommit(sklad, cisloZak, cisloM, cenaTest);
                 logger.StartNewRecord();
                 var one = context.SkladTable.Single(p => p.M_SKLAD == sklad && p.M_CISLOZAK == cisloZak && p.M_CISLOM == cisloM);
                 Debug.WriteLine(one.M_CENAJ);
@@ -140,19 +144,9 @@ namespace DAL.Tests
                 var two = context.SkladTable.Single(p => p.M_SKLAD == sklad && p.M_CISLOZAK == cisloZak && p.M_CISLOM == cisloM);
                 Debug.WriteLine(two.M_CENAJ);
 
-                //two.M_CENAJ = 100;
-                two.M_MNOZSTVI += 10;
-
-                var data = context.SkladTable.FirstOrDefault(p => p.M_CENAJ == -6);
-                Debug.WriteLine(data.M_CENAJ);
-
-
-                logger.StartNewRecord();
-                context.SaveChanges();
-
-                var sql = logger.Current.ToString();
-
-                Assert.ContainsCount(1, "M_MNOZSTVI", sql);
+                // přesto, že došlo v jiném kontextu k aktualizaci záznamu a pak zde k požadavku na jeho nové načtění, tak zde bude stále původní
+                // první načtená hodnota
+                Assert.Equal(cenaTest, two.M_CENAJ);                
             }
         }
 

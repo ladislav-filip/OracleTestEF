@@ -45,6 +45,9 @@ namespace DAL.Tests
                 var two = context.MojeTable.Single(p => p.MojeId == mojeId);
                 // a zde bych očekával, že entita bude mít nastavenou hodnotu XX0
                 Debug.WriteLine(two.MujTyp);
+                 
+                var three = context.MojeTable.Where(p => p.MojeId == 1).AsNoTracking().First();
+                Debug.WriteLine(three.MujTyp);
 
                 two.MujTyp = "NNN";
 
